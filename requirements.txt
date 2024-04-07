@@ -1,0 +1,9 @@
+Django===4.2
+djangorestframework
+djangorestframework-simplejwt[crypto]===5.3.1
+django-cors-headers
+Pillow
+openai
+python-dotenv
+psycopg2.binary
+requests

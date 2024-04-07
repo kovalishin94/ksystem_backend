@@ -1,0 +1,5 @@
+.env
+static
+*.pyc
+media
+migrations
