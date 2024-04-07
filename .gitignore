@@ -3,3 +3,4 @@ static
 *.pyc
 media
 migrations
+__pycahe__
