@@ -14,7 +14,8 @@ from .serializers import (TestSerializer,
                           OptionSerializer,
                           OptionSolveSerializer,
                           AnswerSerializer,
-                          TestResultSerializer)
+                          TestResultSerializer,
+                          TestResultAllSerializer)
 
 
 class QuestionViewSet(ModelViewSet):
@@ -312,6 +313,19 @@ class TestResultViewSet(mixins.CreateModelMixin,
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def list(self, request):
+        try:
+            test = Test.objects.get(id=request.GET.get('id'))
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        results = TestResult.objects.filter(test=test)
+
+        serializer = TestResultAllSerializer(
+            results, many=True, context={"request": request})
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'], permission_classes=[])
     def my_results(self, request):

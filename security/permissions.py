@@ -33,6 +33,11 @@ class TestResultPermission(BasePermission):
     def has_permission(self, request, view):
         if view.action == 'create' or view.action == 'retrieve':
             return True
+        if view.action == 'list':
+            try:
+                return request.user.profile.permissions.filter(name='tst').exists()
+            except:
+                return False
         return False
 
 

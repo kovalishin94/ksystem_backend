@@ -1,6 +1,32 @@
+from django.contrib.auth.models import User
+
 from rest_framework import serializers
 
+from security.models import Profile
+
 from .models import Test, Question, Option, Answer, TestResult
+
+
+class TestProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'photo'
+        ]
+
+
+class TestUserSerializer(serializers.ModelSerializer):
+    profile = TestProfileSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'profile'
+        ]
 
 
 class TestCreatedByField(serializers.RelatedField):
@@ -84,4 +110,20 @@ class TestResultSerializer(serializers.ModelSerializer):
             'correct_answers',
             'wrong_answers',
             'created_at'
+        ]
+
+
+class TestResultAllSerializer(serializers.ModelSerializer):
+    user = TestUserSerializer(read_only=True)
+    created_at = serializers.DateTimeField(
+        format="%d.%m.%Y %H:%M:%S", read_only=True)
+
+    class Meta:
+        model = TestResult
+        fields = [
+            'id',
+            'user',
+            'attempt',
+            'mark',
+            'created_at',
         ]
