@@ -74,6 +74,9 @@ class ProfileDetailUpdateView(RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+        if instance.user.username == 'admin':
+            return Response({'message': 'Действие запрещено'}, status=status.HTTP_403_FORBIDDEN)
+        instance = self.get_object()
         if request.user.profile.id == instance.id:
             return Response({'message': 'Нельзя удалить свой аккаунт'}, status=status.HTTP_403_FORBIDDEN)
         return super().destroy(request, *args, **kwargs)
