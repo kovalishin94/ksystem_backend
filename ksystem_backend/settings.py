@@ -17,6 +17,7 @@ ALLOWED_HOSTS = ['*']
 SERVER_URL = os.getenv('SERVER_URL')
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,7 +28,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'rest_framework.authtoken',
-
     'security',
     'chatgpt',
     'chat',
@@ -64,6 +64,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ksystem_backend.wsgi.application'
+ASGI_APPLICATION = 'ksystem_backend.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        }
+    }
+}
 
 DATABASES = {
     'default': {
