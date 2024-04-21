@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import UntypedToken
 from channels.middleware import BaseMiddleware
 from channels.auth import AuthMiddlewareStack
 from django.db import close_old_connections
+from urllib.parse import parse_qs
 from jwt import decode as jwt_decode
 from django.conf import settings
 
@@ -26,8 +27,7 @@ class JwtAuthMiddleware(BaseMiddleware):
 
     async def __call__(self, scope, receive, send):
         close_old_connections()
-
-        token = dict(scope.get('headers')).get(b'token')
+        token = parse_qs(scope["query_string"].decode("utf8")).get("token")[0]
         
         if not token:
             return None
@@ -37,7 +37,7 @@ class JwtAuthMiddleware(BaseMiddleware):
         except (InvalidToken, TokenError) as e:
             return None
         else:
-            decoded_data = jwt_decode(token.decode('utf8'), settings.SECRET_KEY, algorithms=["HS256"])
+            decoded_data = jwt_decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             scope["user"] = await get_user(validated_token=decoded_data)
         return await super().__call__(scope, receive, send)
 
