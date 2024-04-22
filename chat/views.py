@@ -67,12 +67,6 @@ def message_list(request, id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     data = sql.message_list_sql(id)
-    for message in data:
-        message['human_updated_at'] = timesince(
-            message.get('created_at')) + ' назад'
-        if message.get('photo'):
-            message['photo'] = settings.SERVER_URL + '/media/' +\
-                message['photo']
     return Response(data, status=status.HTTP_200_OK)
 
 
