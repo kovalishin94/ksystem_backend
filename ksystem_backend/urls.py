@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/chatgpt/', include('chatgpt.urls')),
     path('api/chat/', include('chat.urls')),
     path('api/test/', include('ksystem_test.urls')),
+    path('api/testtask/', include('testtask.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
