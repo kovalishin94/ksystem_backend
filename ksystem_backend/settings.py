@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'security',
     'chatgpt',
     'chat',
+    'testtask',
     'ksystem_test',
 ]
 
