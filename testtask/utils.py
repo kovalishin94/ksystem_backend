@@ -27,24 +27,26 @@ def human_schedule(data: dict) -> dict:
             continue
 
         if statuses[0]['type'] == 'close':
+            value = unix_time_to_time(statuses[0]['value'])
             if not previous_day:
-                last_week_close = unix_time_to_time(statuses[0]['value'])
+                last_week_close = value
             else:
-                result[previous_day] += unix_time_to_time(statuses[0]['value'])
+                result[previous_day] += value
             statuses.pop(0)
             if not statuses:
                 result[day] = 'Closed'
                 continue
 
         for status in statuses:
+            value = unix_time_to_time(status['value'])
             if not result.get(day):
-                result[day] = (unix_time_to_time(status['value']) + ' - ')
+                result[day] = f'{value} - '
                 continue
             if result[day][-1] == ' ':
-                result[day] += unix_time_to_time(status['value'])
+                result[day] += value
                 continue
 
-            result[day] += (', ' + unix_time_to_time(status['value']) + ' - ')
+            result[day] += f', {value} - '
 
         previous_day = day
 
