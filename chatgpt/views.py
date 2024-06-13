@@ -2,6 +2,7 @@ import os
 import datetime
 import openai
 import requests
+import httpx
 
 from dotenv import load_dotenv
 
@@ -15,6 +16,7 @@ from chatgpt import models, serializers
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_TOKEN")
+openai.http_client = httpx.Client(proxy="socks5://127.0.0.1:47779")
 
 
 def create_db_entry(user_pk, question_body, bot_role, answer, speech=None, image=None):
