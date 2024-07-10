@@ -1,5 +1,5 @@
 # Pet project
-Project deployment - https://24kovalishin.ru
+Project deployment - https://kovalishin.ru
 # API
 ## Authtorization
 ### POST _/api/token/_ 
